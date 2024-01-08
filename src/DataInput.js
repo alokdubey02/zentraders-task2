@@ -1,6 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 
 const DataInput = () => {
+  const [all_fields, setall_fields] = useState([
+    "Title",
+    "Subcategory",
+    "Price",
+    "Popularity",
+  ]);
+  const [selected_fields, setselected_fields] = useState([]);
+  const [selectt, setselectt] = useState("");
+  const handleselect = () => {
+    const updatedSourceArray = all_fields.filter(
+      (element) => element !== selectt
+    );
+    const newArray = [...selected_fields, selectt];
+    setselected_fields(newArray);
+    setall_fields(updatedSourceArray);
+  };
+  const handledeselect = () => {
+    const updatedSourceArray = selected_fields.filter(
+      (element) => element !== selectt
+    );
+    const newArray = [...all_fields, selectt];
+    setselected_fields(updatedSourceArray);
+    setall_fields(newArray);
+  };
+
   return (
     <>
       <div className="container">
@@ -61,22 +86,68 @@ const DataInput = () => {
             </thead>
             <tbody style={{ columnGap: "4px" }}>
               <th style={{ border: "1px solid black" }}>
-                <tr>Title</tr>
-                <tr>Subcategory</tr>
-                <tr>Price</tr>
-                <tr>Popularity</tr>
+                {all_fields.sort().map((field, index) => (
+                  <tr key={index}>
+                    {
+                      <>
+                        <button
+                          style={{ border: "none" }}
+                          onClick={() => setselectt(field)}
+                        >
+                          {field}
+                        </button>
+                      </>
+                    }
+                  </tr>
+                ))}
+                {/* <tr>Title</tr>
+                                        <tr>Subcategory</tr>
+                                        <tr>Price</tr>
+                                        <tr>Popularity</tr> */}
               </th>
-              <th>
+              <th
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  textAlign: "center",
+                }}
+              >
                 <tr>
-                  <button>&gt;&gt;</button>
+                  <button
+                    style={{ padding: "1px 7px" }}
+                    className="btn btn-secondary"
+                    onClick={() => handleselect()}
+                  >
+                    &gt;&gt;
+                  </button>
                 </tr>
                 <tr>
-                  <button>&lt;&lt;</button>
+                  <button
+                    style={{ padding: "1px 7px" }}
+                    className="btn btn-secondary"
+                    onClick={() => handledeselect()}
+                  >
+                    &lt;&lt;
+                  </button>
                 </tr>
               </th>
               <th style={{ border: "1px solid black" }}>
-                <tr>Title</tr>
-                <tr>Subcategory</tr>
+                {/* <tr>Title</tr>
+                                        <tr>Subcategory</tr> */}
+                {selected_fields.sort().map((field, index) => (
+                  <tr key={index}>
+                    {
+                      <>
+                        <button
+                          style={{ border: "none" }}
+                          onClick={() => setselectt(field)}
+                        >
+                          {field}
+                        </button>
+                      </>
+                    }
+                  </tr>
+                ))}
               </th>
             </tbody>
           </table>
